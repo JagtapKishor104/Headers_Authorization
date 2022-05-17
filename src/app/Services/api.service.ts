@@ -11,7 +11,7 @@ export class ApiService {
   ) { }
 
   requestHeaders = new HttpHeaders().set('Content-Type', 'text')
-    .append('basic', '123456789');
+    .append('basic', '_Your Headers_');
 
   getstoreApiurl = "https://growiseit.com/movemykart/API/index.php/storeTypes";
 
