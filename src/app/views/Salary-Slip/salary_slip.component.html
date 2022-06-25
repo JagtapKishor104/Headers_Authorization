@@ -1,0 +1,41 @@
+<h3>Salary Slips</h3>
+<div class="table-responsive mt-4">
+    <table class="table table-hover table-striped table-bordered">
+        <thead class="text-uppercase">
+            <tr>
+                <th>Emp Code</th>
+                <th>Name</th>
+                <th>Salary Month</th>
+                <th>Earning</th>
+                <th>Deduction</th>
+                <th>Net Salary</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let d of data">
+                <td>{{d.emp_code}}</td>
+                <td>{{d.name}}</td>
+                <td>{{d.salary_month}}</td>
+                <td>{{d.earning}}</td>
+                <td>{{d.deduction}}</td>
+                <td>{{d.net_salary}}</td>
+                <td>
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <button class="btn btn-warning"><a [routerLink]="['/slip',d.emp_code]"
+                            routerLinkActive="router-link-active" target="_blank" >D</a></button>
+
+                        </div>
+                        <div>
+                            <button class="btn btn-danger">Delete</button>
+                        </div>
+                    </div>
+                </td>
+
+
+            </tr>
+        </tbody>
+
+    </table>
+</div>

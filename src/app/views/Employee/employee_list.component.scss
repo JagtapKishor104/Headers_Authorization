@@ -1,0 +1,18 @@
+:host ::ng-deep .accordion-custom {
+  .accordion-button {
+    background-color: var(--cui-dark);
+    color: var(--cui-white);
+  }
+}
+nav 
+{
+  background-color: rgb(0, 68, 255);
+}
+.modal-dialog
+{
+  box-shadow: 0px 0px 7px 5px rgba(0,0,0,0.75);
+}
+.row
+{
+  margin-bottom: 1rem;
+}

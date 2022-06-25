@@ -1,0 +1,27 @@
+
+<div class="d-flex justify-content-center mt-5 pt-5 ">
+    <div class="card background" style="width:20rem">
+      <h5 class="card-title text-center mt-3">PayRoll Employee Login </h5>
+  
+      <div class="card-body">
+        <form [formGroup]="empform" (ngSubmit)="empSubmit()">
+          <div class=" mb-3">
+          <label class="form-label">Mobile Number <span>*</span></label>
+          <input type="number" class="form-control" placeholder="Enter Mobile Number" formControlName="mobile">
+      </div>
+      <div class="mb-3">
+            <label class="form-label">Password <span>*</span></label>
+            <input type="password" class="form-control" placeholder="Enter Password" formControlName="emp_password">
+          </div>
+      <div class="text-center text-light">
+        <button type="submit" class="btn btn-outline-primary text-center text-light">Submit</button>
+        <p class="mt-2">New User? <span class="link-primary" routerLink="/register"  >Please Register</span></p>
+        <p class="mt-2"> Are you Admin? <span class="link-primary" routerLink="/login"  >Login as Admin</span></p>
+      </div>
+  
+      </form>
+  
+    </div>
+  </div>
+  </div>
+  

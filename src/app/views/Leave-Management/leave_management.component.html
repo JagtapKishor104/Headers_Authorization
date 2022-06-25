@@ -1,0 +1,120 @@
+<div class="d-flex justify-content-between bg-warning p-2">
+    <div class="fs-3">
+        Leaves
+    </div>
+    <div>
+        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal"
+            (click)="openmodal()">+ADD Leaves</button>
+        <!--  [hidden]="user_type=='admin' || user_type=='supervisor'" -->
+    </div>
+
+</div>
+<div>
+    <div class="table-responsive">
+        <table class="table table-hovered table-striped table-bordered text-center border-warning">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Leave subject</th>
+                    <!-- <th>Apply Date</th> -->
+                    <th>Employee Name</th>
+                    <th>Leave Date</th>
+                    <th>Leave Type</th>
+                    <th>Leave Message</th>
+                    <th>Status</th>
+                    <th>Leave Type</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let l of leaves,index as i">
+                    <td>{{l.leave_id}}</td>
+                    <td>{{l.leave_subject}}</td>
+                    <td>{{l.emp_id}}</td>
+                    <!-- <td>{{l.apply_date}}</td> -->
+                    <td>{{l.leave_dates}}</td>
+                    <td>{{l.leave_type}}</td>
+                    <td class="col-5">{{l.leave_message }}</td>
+                    <td *ngIf="l.leave_status!=='reject' && l.leave_status!=='pending' ; else elseblock">
+                        <button class="btn btn-info">Approve</button>
+                    </td>
+                    <ng-template #elseblock>
+                        <td *ngIf="l.leave_status!=='approve' && l.leave_status!=='reject' ; else newelse">
+                            <button class="btn btn-warning">Pending</button>
+                        </td>
+                    </ng-template>
+                    <ng-template #newelse>
+                        <td *ngIf="l.leave_status!=='approve' && l.leave_status!=='pending' ">
+                            <button class="btn btn-danger">Reject</button>
+                        </td>
+                    </ng-template>
+                    <td><button class="btn btn-primary" (click)="edit(l.leave_id)" data-bs-toggle="modal"
+                            data-bs-target="#exampleModal">View</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<!-- <mat-menu #appMenu="matMenu">
+    <div (click)="$event.stopPropagation()">
+        <mat-calendar #calendar 
+           (selectedChange)="select($event,calendar)" 
+            [dateClass]="isSelected">
+        </mat-calendar>
+    </div>
+</mat-menu> -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div>
+                    <form [formGroup]="myform">
+                        <div class="row g-2">
+                            <div class="col-md-6">
+                                <label for="" class="form-label">Employee Name</label>
+                                <ng-select [items]="empname" bindLabel="full_name" bindValue="emp_id"
+                                    formControlName="emp_id">
+                                </ng-select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="" class="form-label">leave_subject</label>
+                                <input type="text" class="form-control" formControlName="leave_subject">
+                            </div>
+
+                            <div class="col-md-6">
+                                <label for="" class="form-label">leave_dates</label>
+                                <!-- <input type="date" id="dates" class="form-control" formControlName="leave_dates"> -->
+                                <mbsc-datepicker [controls]="['calendar']" formControlName="leave_dates" [selectMultiple]="true" [selectCounter]="true">
+                                </mbsc-datepicker>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="" class="form-label">leave_type</label>
+                                <input type="text" class="form-control" formControlName="leave_type">
+                            </div>
+                            <div class="col-md-6">
+                                <!-- [hidden]="user_type=='supervisor' || user_type=='admin'" -->
+                                <label for="" class="form-label">leave_status</label>
+                                <input type="text" class="form-control" formControlName="leave_status">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="" class="form-label">leave_subject</label>
+                                <textarea type="text" class="form-control" col="1"
+                                    formControlName="leave_subject"></textarea>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="showadd" (click)="save()">Save
+                    changes</button>
+                <button type="button" *ngIf="!showadd" class="btn btn-warning">Update</button>
+            </div>
+        </div>
+    </div>
+</div>

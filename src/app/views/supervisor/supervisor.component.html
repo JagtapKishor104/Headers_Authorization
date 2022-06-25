@@ -1,0 +1,125 @@
+<!-- name, mobile, address, contact person name, city_id, status, created_at -->
+<div class="d-flex justify-content-between bg-warning p-2">
+    <div class="fs-3 text-primary">
+        Supervisor
+    </div>
+    <div>
+        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="openmodal()">+
+            Add Supervisor</button>
+    </div>
+</div>
+<div class="d-flex justify-content-between align-items-center">
+    <div class="  my-2">
+        Show
+        <select (change)="
+    onTableSizeChange($event)" class="px-3">
+            <option *ngFor="let size of tableSizes" [ngValue]="size">
+                {{ size }}
+            </option>
+        </select>
+        entries
+    </div>
+    <div class="  form-group my-2">
+        <input type="search" class="form-control" [(ngModel)]="id" placeholder="Search ID">
+    </div>
+</div>
+<div class="mt-3">
+    <div class="table-responsive">
+        <table class="table table-hovered table-striped table-bordered text-center border-warning">
+            <thead>
+                <tr class="text-uppercase">
+                    <th>ID</th>
+                    <th>Address</th>
+                    <th>company name</th>
+                    <th>mobile</th>
+                    <th>city name</th>
+                    <th>status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <tr *ngFor="let c of company |SearchCompanyPipe:id | paginate:{itemsPerPage: tableSize,currentPage: page,totalItems: count} ; let i = index"
+                    [class.active]="i == currentIndex">
+                    <td>{{c.id}}</td>
+                    <td>{{c.address}}</td>
+                    <td>{{c.name}}</td>
+                    <td>{{c.mobile}}</td>
+                    <td>{{c.city_name}}</td>
+                    <td *ngIf="c.status==1;else elseblock">
+                        <button class="btn btn-sm btn-outline-primary rounded-pill mt-1" type="button"
+                            (click)=statussubmit(c)>Enable</button>
+                    </td>
+                    <ng-template #elseblock>
+                        <td>
+                            <button class="btn btn-sm btn-outline-danger rounded-pill mt-1" type="button"
+                                (click)=statussubmit(c)>
+                                disabled</button>
+                        </td>
+                    </ng-template>
+                    <td>
+                        <div class="">
+
+                            <button class="btn btn-outline-primary rounded-pill" data-bs-toggle="modal"
+                                data-bs-target="#exampleModal" (click)="edit(c.id)">Edit</button>
+
+                        </div>
+                    </td>
+
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+    <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+    </pagination-controls>
+</div>
+<!-- Modal -->
+<div class="modal fade" data-bs-backdrop="static" data-bs-keyboard="false" id="exampleModal" tabindex="-1"
+    aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="myform">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Name</label>
+                            <input type="text" class="form-control"  placeholder="Company name" formControlName="name">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Email</label>
+                            <input type="email" class="form-control" placeholder="Email" formControlName="email">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Mobile Number</label>
+                            <input type="text" class="form-control" placeholder="Mobile Number"
+                                formControlName="mobile">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">address</label>
+
+                            <textarea type="text" class="form-control" placeholder="Address" formControlName="address"
+                                rows="1"></textarea>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">City Name</label>
+                            <ng-select [items]="city" bindLabel="city" bindValue="id" placeholder="City Name"
+                                formControlName="city_id">
+                            </ng-select>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" *ngIf="showadd" (click)="sendcompanydata()">Save
+                    changes</button>
+                <button type="button" class="btn btn-primary" *ngIf="!showadd" (click)="update()">Update</button>
+            </div>
+        </div>
+    </div>
+</div>

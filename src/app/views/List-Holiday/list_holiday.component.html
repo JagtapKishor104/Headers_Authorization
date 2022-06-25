@@ -1,0 +1,88 @@
+<div class="d-flex justify-content-between bg-warning p-2">
+    <div class="fs-4">Holiday List</div>
+    <div>
+        <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="openModal()">+Add Holiday</button>
+    </div>
+
+</div>
+
+<div>
+    <div>
+        <table class="table table-hovered table-striped table-bordered text-center border-warning">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Holiday Title</th>
+                    <th>Holiday Desc</th>
+                    <th>Holiday Date</th>
+                    <th>Holiday Type</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let h of holiday,index as i">
+                    <td>{{i+1}}</td>
+                    <td>{{h.holiday_title}}</td>
+                    <td>{{h.holiday_desc}}</td>
+                    <td>{{h.holiday_date}}</td>
+                    <td *ngIf="h.holiday_type=='compulsory';else elseblock">
+                        <button class="btn btn-info">Compulsory</button>
+                    </td>
+                    <ng-template #elseblock>
+                        <td>
+                            <button class="btn btn-danger">Restricted</button>
+                        </td>
+                    </ng-template>
+                    <td class="d-flex">
+                        <button class="btn btn-primary mx-2" data-bs-toggle="modal" data-bs-target="#staticBackdrop" (click)="editHoliday(h.holiday_id)">View</button>
+                        <button class="btn btn-danger" (click)="deleteHoliday(h.holiday_id)">Delete</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+<div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel">Modal title</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="myform">
+                    <div class="row g-3">
+                        <div class="col-6">
+                            <label  class="form-label">Holiday Title</label>
+                            <input type="text" class="form-control" placeholder="Holiday Title" formControlName="holiday_title">
+                        </div>
+                        <div class="col-6">
+                            <label  class="form-label">Holiday Description</label>
+                            <input type="text" class="form-control" placeholder="Holiday Description" formControlName="holiday_desc">
+                        </div>
+                        <div class="col-6">
+                            <label  class="form-label">Holiday Date</label>
+                            <input type="date" class="form-control" placeholder="Holiday Date" formControlName="holiday_date">
+                        </div>
+                        <div class="col-6">
+                            <label  class="form-label">Holiday Type </label>
+                            <select class="form-select" aria-label="Default select example" formControlName="holiday_type">
+                                <option selected>Select Holiday Type</option>
+                                <option value="compulsory">compulsory</option>
+                                <option value="restricted">restricted</option>
+                            </select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" id="cancel1" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button *ngIf="showsave" class="btn btn-primary" (click)="saveHoliday()">Save</button>
+                <button *ngIf="showupdate" class="btn btn-warning" (click)="updateHoliday()" >Update</button>
+            </div>
+        </div>
+    </div>
+</div>

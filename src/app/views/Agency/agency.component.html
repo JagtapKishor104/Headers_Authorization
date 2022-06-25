@@ -1,0 +1,121 @@
+<div class="d-flex justify-content-between align-items-center bg-warning">
+  <div class="ps-3">
+    <p class="fs-3">Agency</p>
+  </div>
+  <!-- <div class="pe-3">
+    <button class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="showbtn()">+Add
+      Agency</button>
+  </div> -->
+</div>
+
+<div>
+  <div class="table-responsive">
+    <table class="table">
+      <thead>
+        <tr class="text-uppercase">
+          <th>Agency ID</th>
+          <th>Name</th>
+          <th>Cover</th>
+          <th>Mobile Number</th>
+          <th>Contact person name</th>
+          <th>address</th>
+          <th [hidden]="user_type=='supervisor'" >Status</th>
+          <th [hidden]="user_type=='supervisor'">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let d of Data">
+          <td>{{d.agency_id}}</td>
+          <td>{{d.name}}</td>
+          <td><img [src]="d.photo" alt="Image not found" height="50" width="50"></td>
+          <td>{{d.mobile_number}}</td>
+          <td>{{d.contact_person_name}}</td>
+          <td>{{d.address}}</td>
+          <td *ngIf="d.status==1;else elseblock" [hidden]="user_type=='supervisor'">
+            <button class="btn btn-outline-primary" (click)="status(d)">Enable</button>
+          </td>
+          <ng-template #elseblock [hidden]="user_type=='supervisor'">
+            <td>
+              <button class="btn btn-outline-danger" (click)="status(d)">Disable</button>
+            </td>
+          </ng-template>
+          <td>
+            <div class="d-flex justify-content-between" >
+              <div class="pe-2" [hidden]="user_type=='supervisor'">
+
+                <button class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" (click)="editData(d.agency_id)">Edit</button>
+              </div>
+              <!-- <div>
+                <button class="btn btn-outline-danger" (click)="deleteData(d.agency_id)">Delete</button>
+
+              </div> -->
+            </div>
+          </td>
+        </tr>
+      </tbody>
+
+    </table>
+  </div>
+
+</div>
+
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <div>
+          <form [formGroup]="myform">
+            <div class="row g-3">
+
+              <div class="col-md-6">
+                <label for="" class="form-label">Agency Name</label>
+                <input type="text" class="form-control" formControlName="agency_id" />
+              </div>
+              <div class="col-md-6">
+                <label for="" class="form-label">Admin Name</label>
+                <input type="text" class="form-control" formControlName="admin_id" />
+
+              </div>
+              <div class="col-md-6">
+                <label for="" class="form-label">Name</label>
+                <input type="text" class="form-control" formControlName="name" />
+              </div>
+              <div class="col-md-6">
+                <label for="" class="form-label">Mobile Number</label>
+                <input type="number" class="form-control" formControlName="mobile_number" />
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Address</label>
+                <textarea class="form-control" rows="1" formControlName="address"></textarea>
+              </div>
+              <div class="col-md-6">
+                <label class="form-label">Contact Person Name</label>
+                <input type="text" class="form-control" formControlName="contact_person_name" />
+              </div>
+              <div class="col-md-6">
+                <label for="" class="form-label">Cover Image</label>
+                <input type="file" class="form-control" (change)="changeimage($event)" />
+              </div>
+              <div class="col-md-6">
+                <img class="img-thumbnail mt-3"
+                  [src]="( imageSrc || photo ) || 'https://i.pinimg.com/736x/8b/16/7a/8b167af653c2399dd93b952a48740620.jpg'"
+                  alt="your image" srcset="" height="200" width="200" />
+
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" *ngIf="showadd" class="btn btn-primary" (click)="saveData()">Save changes</button>
+        <button type="button" *ngIf="showupdate" class="btn btn-warning">Update</button>
+
+      </div>
+    </div>
+  </div>
+</div>

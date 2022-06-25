@@ -1,0 +1,183 @@
+<div>
+  <nav class="navbar navbar-expand-lg navbar-light">
+    <div class="container">
+      <a class="navbar-brand text-light" href="#">Attendence</a>
+
+      <div>
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <button class="btn btn-primary"  data-bs-toggle="modal" data-bs-target="#exampleModal"
+            (click)="openmodal()">Add
+            Attendence</button>
+        </ul>
+
+      </div>
+    </div>
+  </nav>
+
+  <div class=" container-fluid">
+
+    <div class="d-flex justify-content-between align-items-center">
+      <div *ngIf="showmsg1" class="  my-2">
+        Show
+        <select (change)="
+      onTableSizeChange($event)" class="px-3">
+          <option *ngFor="let size of tableSizes" [ngValue]="size">
+            {{ size }}
+          </option>
+        </select>
+        entries
+      </div>
+      <div *ngIf="showmsg1" class="  form-group my-2">
+        <input type="search" class="form-control" [(ngModel)]="emp_id" placeholder="Search Employee ID">
+      </div>
+      <div *ngIf="showmsg1" class="  form-group my-2">
+        <input type="date" class="form-control" [(ngModel)]="attendance_date" placeholder="Search Date">
+      </div>
+
+      <!-- <div class=" col-md my-2 form-group">
+        <input type="search" class="form-control" #dp="bsDatepicker" [bsConfig]="{ isAnimated: true }" bsDatepicker
+          [(ngModel)]="fromDate" placeholder="Start Date" />
+      </div>
+      <div class="col-md  my-2 form-group">
+        <input type="search" class="form-control" #dp="bsDatepicker" [bsConfig]="{ isAnimated: true }" bsDatepicker
+          [(ngModel)]="toDate" placeholder="End Date" />
+      </div> -->
+      <!-- <div class="col-md-2 form-group my-2">
+  
+        <button class="btn btn-danger form-control" (click)="filterDate()">Filter</button>
+      </div> -->
+
+    </div>
+  </div>
+
+  <div class="table-responsive ">
+    <table class="table table-sm table-hover table-striped table-bordered border-warning">
+      <thead class="text-uppercase">
+        <tr>
+          <th>ID</th>
+          <th>Full name</th>
+          <th>Attendence Date</th>
+          <th>punch in time</th>
+          <th>punch out time</th>
+          <th>Attendence Type</th>
+          <th>Leave Type</th>
+          <th>Description</th>
+          <th>action</th>
+        </tr>
+      </thead>
+      <tbody class="text-center">
+
+        <tr
+          *ngFor="let d of attendence | customFilter:emp_id |customDateFilter:attendance_date | paginate:{itemsPerPage: tableSize,currentPage: page,totalItems: count} ; let i = index"
+          [class.active]="i == currentIndex">
+          <td>{{d.attendance_id}}</td>
+          <td>{{d.first_name}} {{d.last_name}}</td>
+          <td>{{d.attendance_date}}</td>
+          <td>{{d.punch_in_time}}</td>
+          <td>{{d.punch_out_time}}</td>
+          <td>{{d.type}}</td>
+          <td>{{d.pl_type}}</td>
+          <td>{{d.emp_desc}}</td>
+          <td class="d-flex justify-content-evenly">
+
+            <button class="btn btn-outline-primary rounded-pill me-3" data-bs-toggle="modal" data-bs-target="#exampleModal"
+              (click)="edit(d.attendance_id)">View</button>
+              <button class="btn btn-outline-danger rounded-pill" (click)="delete(d.attendance_id)">Delete</button>
+
+
+          </td>
+
+        </tr>
+
+      </tbody>
+
+    </table>
+
+    <!-- <div *ngIf="showmsg" class="text-center text-danger fs-3">
+      {{msg}}
+
+    </div> -->
+    <div class="d-flex  justify-content-start">
+
+      <div *ngIf="showmsg1">
+        <pagination-controls previousLabel="Prev" nextLabel="Next" (pageChange)="onTableDataChange($event)">
+        </pagination-controls>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+
+          <div>
+            <form [formGroup]="myform">
+              <div class="row g-3">
+                <div class="col-md-6 ">
+                  <label class="form-label">Emp Name</label>
+                  <ng-select [items]="empname" bindLabel="full_name" bindValue="emp_id" placeholder="Employee Name"
+                    formControlName="emp_id">
+                  </ng-select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Attendence Date</label>
+                  <input type="date" class="form-control" placeholder="Attendence Date"
+                    formControlName="attendance_date">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Punch In Time</label>
+
+                  <input type="time" step='1' min="00:00:00" max="20:00:00" class="form-control"
+                    placeholder="Punch In Time" formControlName="punch_in_time">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Punch Out Time</label>
+                  <input type="time" step='1' min="00:00:00" max="20:00:00" class="form-control"
+                    placeholder="Punch Out Time" formControlName="punch_out_time">
+                </div>
+                <div class="col-md-6">
+                  <label class="form-label">Attendence Type</label>
+                  <select (change)="type($event)" class="form-select" aria-label="Default select example"
+                    formControlName="type">
+                    <option selected value="P">Present</option>
+                    <option value="A">Absent</option>
+                    <option value="PL">Paid Leave</option>
+                    <option value="UL">Unpaid Leave</option>
+                  </select>
+                </div>
+                <div *ngIf="plFlag" class="col-md-6">
+                  <label class="form-label">Leave Type</label>
+                  <select class="form-select" aria-label="Default select example" formControlName="pl_type">
+                    <option selected value="CL">Causel Leave</option>
+                    <option value="SL">Seek Leave</option>
+                  </select>
+                </div>
+                <div class="col-md-12">
+                  <label class="form-label">Description</label>
+                  <textarea type="text" class="form-control" placeholder="Description" rows="3"
+                    formControlName="emp_desc"></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="cancel" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" *ngIf="showadd" (click)="postattendence()">Save changes</button>
+          <button type="button" *ngIf="!showadd" class="btn btn-warning" (click)="update()">Update</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <div *ngIf="!showmsg1" class="alert alert-primary" role="alert">
+  {{msg1}} <a [routerLink]="['/emp_login']" routerLinkActive="router-link-active"  class="alert-link"> Login Here</a>
+</div> -->
