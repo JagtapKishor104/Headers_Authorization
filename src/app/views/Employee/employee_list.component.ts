@@ -579,7 +579,7 @@ export class AccordionsComponent implements OnInit {
     this.addbtn = false;
     this.updatebtn = true;
     this.showstatus = true;
-
+    
     this.api.post("Employee/getbyid_employee", param).then((data: any) => {
       console.log(data);
       data.data.forEach((element: any) => {
@@ -595,6 +595,8 @@ export class AccordionsComponent implements OnInit {
           console.log(i);
           console.log("family lenght",family.length);    
           this.newDynamic.family_name = family[i].family_name;
+          console.log(this.newDynamic.family_name = family[i].family_name);
+          
           this.newDynamic.family_aadhar_no = family[i].family_aadhar_no;
           this.newDynamic.family_dob = family[i].family_dob;
           this.newDynamic.family_age = family[i].family_age;
@@ -603,7 +605,10 @@ export class AccordionsComponent implements OnInit {
         {
           this.newDynamic = { family_name: "", family_aadhar_no: "", family_dob: "", family_age: "", family_sex: "" };
           this.dynamicArray.push(this.newDynamic); 
+          console.log(this.dynamicArray);
+ 
         }
+     
         }
 
         this.myform.patchValue(
@@ -649,7 +654,6 @@ export class AccordionsComponent implements OnInit {
             "nominee_name": nominee.nominee_name,
             "nominee_dob": nominee.nominee_dob,
             "nominee_relation": nominee.nominee_relationb,
-            "family.family_name": family[0].family_name
           })
 
 
